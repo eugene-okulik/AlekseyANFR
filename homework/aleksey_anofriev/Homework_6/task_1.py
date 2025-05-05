@@ -14,5 +14,5 @@ for word in words:
     else:
         new_word = word + "ing"
     fin_words.append(new_word)
-    
+
 print(' '.join(fin_words))
