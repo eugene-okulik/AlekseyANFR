@@ -33,7 +33,7 @@ def calc(first, second, operation):
         return first / second
     elif operation == '*':
         return first * second
- 
+
 
 num1 = int(input("Введите первое число: "))
 num2 = int(input("Введите второе число: "))
