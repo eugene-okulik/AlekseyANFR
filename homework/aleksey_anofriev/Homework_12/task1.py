@@ -30,7 +30,6 @@ class Bouquet:
         for f in self.flowers:
             total += f.price
         return total
-    
 
     def get_wilt_time(self):
         if len(self.flowers) == 0:
