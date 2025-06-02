@@ -31,6 +31,7 @@ class Bouquet:
             total += f.price
         return total
     
+
     def get_wilt_time(self):
         if len(self.flowers) == 0:
             return 0
@@ -75,7 +76,8 @@ print("\nSorted by color:")
 my_bouquet.sort_by_color()
 for f in my_bouquet.flowers:
     print(f"{f.color} {f.name}")
-    
+
+
 print("\nFind red flowers:")
 red_flowers = my_bouquet.find_color("red")
 for f in red_flowers:
