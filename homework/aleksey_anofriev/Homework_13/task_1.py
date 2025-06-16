@@ -16,7 +16,6 @@ def read_file():
 def process_line(line, number):
     if line.startswith(f'{number}. '):
         line = line[len(f'{number}. '):]
-    
 
     parts = line.split(' - ', 1)
     date_str = parts[0]
