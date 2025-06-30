@@ -87,7 +87,7 @@ for book in books:
     print(book['title'])
 
 cursor.execute("""
-        SELECT 
+        SELECT
             s.id AS student_id, s.name, s.second_name,
             g.title AS group_title,
             b.title AS book_title,
