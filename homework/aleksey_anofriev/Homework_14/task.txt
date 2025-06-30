@@ -1,0 +1,34 @@
+INSERT INTO students (name, second_name, group_id) VALUES ('Alolik', 'Alolov', NULL)
+
+INSERT INTO `books` (title, taken_by_student_id) values ('Китай город', 20776)
+
+INSERT INTO `groups` (title, start_date, end_date) values ('ALEX testers', 'May 25', 'Jule 25')
+
+UPDATE students SET group_id = 1 WHERE id = 20776
+
+INSERT INTO subjets (title) VALUES ('history123456')
+
+INSERT INTO lessons (title, subject_id) VALUES ('LES2', 11511)
+INSERT INTO lessons (title, subject_id) VALUES ('LES1', 11512)
+
+
+INSERT INTO marks (value, lesson_id, student_id) VALUES ('5', 11507, 20776)
+
+SELECT marks.value
+FROM marks
+JOIN students ON marks.student_id = students.id
+WHERE students.id = 20776
+
+SELECT books.title
+FROM books
+JOIN students ON books.taken_by_student_id = students.id
+WHERE students.id = 20776
+
+SELECT *
+FROM students
+JOIN `groups` ON students.group_id = groups.id
+JOIN books ON books.taken_by_student_id = students.id
+JOIN marks ON marks.student_id = students.id
+JOIN lessons ON marks.lesson_id = lessons.id
+JOIN subjets ON lessons.subject_id = subjets.id
+WHERE students.id = 20776
