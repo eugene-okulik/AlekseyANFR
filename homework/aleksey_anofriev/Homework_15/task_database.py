@@ -12,6 +12,13 @@ db = mysql.connect(
 cursor = db.cursor(dictionary=True)
 
 cursor.execute(
+    "INSERT INTO students (name, second_name) VALUES (%s, %s)",
+    ('Alolik', 'Alolov')
+)
+student_id = cursor.lastrowid
+print(f"Создан студент с id={student_id}")
+
+cursor.execute(
     "INSERT INTO `groups` (title, start_date, end_date) VALUES (%s, %s, %s)",
     ('ALEX testers', '2025-05-25', '2025-07-25')
 )
@@ -19,21 +26,23 @@ group_id = cursor.lastrowid
 print(f"Создана группа с id={group_id}")
 
 cursor.execute(
-    "INSERT INTO students (name, second_name, group_id) VALUES (%s, %s, %s)",
-    ('Alolik', 'Alolov', group_id)
+    "UPDATE students SET group_id = %s WHERE id = %s",
+    (group_id, student_id)
 )
-student_id = cursor.lastrowid
-print(f"Создан студент с id={student_id}")
+print(f"Обновлён студент id={student_id} с group_id={group_id}")
 
 book_titles = ['Книга 1', 'Книга 2', 'Книга 3']
-book_ids = []
+
+books_data = []
 for title in book_titles:
-    cursor.execute(
-        "INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)",
-        (title, student_id)
-    )
-    book_ids.append(cursor.lastrowid)
-print(f"Созданы книги с id: {book_ids}")
+    books_data.append((title, student_id))
+
+cursor.executemany(
+    "INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)",
+    books_data
+)
+print(f"Созданы книги: {book_titles}")
+
 
 subjects = ['Математика', 'История', 'Физика']
 subject_ids = []
@@ -56,15 +65,17 @@ for subj_id in subject_ids:
         lesson_ids.append(cursor.lastrowid)
 print(f"Созданы занятия с id: {lesson_ids}")
 
+marks_data = []
 for lesson_id in lesson_ids:
-    cursor.execute(
-        "INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)",
-        (5, lesson_id, student_id)
-    )
+    marks_data.append((5, lesson_id, student_id))
+
+cursor.executemany(
+    "INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)",
+    marks_data
+)
 print(f"Поставлены оценки студенту id={student_id} для всех занятий")
 
 db.commit()
-
 
 cursor.execute("""
         SELECT m.value, l.title AS lesson_title, sub.title AS subject_title
