@@ -15,7 +15,12 @@ db = mysql.connect(
 
 cursor = db.cursor(dictionary=True)
 
-csv_file = r'C:\Users\Aleksey Anofriev\Desktop\project_Okulik\AlekseyANFR\homework\eugene_okulik\Lesson_16\data.csv'
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..', '..', '..'))
+csv_file = os.path.join(
+    project_root,
+    'homework', 'eugene_okulik', 'Lesson_16', 'hw_data', 'data.csv'
+)
 
 with open(csv_file, newline='', encoding='utf-8') as f:
     reader = csv.DictReader(f)
@@ -24,11 +29,36 @@ with open(csv_file, newline='', encoding='utf-8') as f:
 
 missing_rows = []
 
+query = """
+SELECT
+    s.id AS student_id
+FROM students s
+JOIN `groups` g ON s.group_id = g.id
+JOIN marks m ON m.student_id = s.id
+JOIN lessons l ON m.lesson_id = l.id
+JOIN subjets sub ON l.subject_id = sub.id
+JOIN books b ON b.taken_by_student_id = s.id
+WHERE
+    s.name = %s AND
+    s.second_name = %s AND
+    g.title = %s AND
+    b.title = %s AND
+    sub.title = %s AND
+    l.title = %s AND
+    m.value = %s
+LIMIT 1
+"""
+
 for row in csv_rows:
-    query = (
-        "SELECT * FROM students WHERE Name = %s AND last = %s AND city = %s"
+    values = (
+        row['name'],
+        row['second_name'],
+        row['group_title'],
+        row['book_title'],
+        row['subject_title'],
+        row['lesson_title'],
+        row['mark_value']
     )
-    values = (row['Name'], row['last'], row['city'])
     cursor.execute(query, values)
     result = cursor.fetchone()
     if not result:
@@ -38,7 +68,7 @@ cursor.close()
 db.close()
 
 if missing_rows:
-    print("Строки, которых нет в базе:")
+    print("Строки, которых нет в базе данных:")
     for row in missing_rows:
         print(row)
 else:
