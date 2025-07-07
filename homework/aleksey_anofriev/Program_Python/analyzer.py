@@ -10,6 +10,7 @@ init(autoreset=True)
 
 TIMESTAMP_PATTERN = re.compile(r'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}[.,]\d{3})')
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help="File or folder path")
@@ -50,6 +51,7 @@ def read_log_file(filepath):
             blocks[current_key] = '\n'.join(current_block_lines)
     return blocks
 
+
 def extract_context(line, search_word, context_size=5):
 
     words = line.split()
@@ -66,6 +68,7 @@ def extract_context(line, search_word, context_size=5):
     context_words = words[start:end]
     context_words[index - start] = Fore.RED + context_words[index - start] + Style.RESET_ALL
     return ' '.join(context_words)
+
 
 def search_in_block(block_text, search_text):
 
@@ -113,8 +116,10 @@ def analyze_logs(path, search_text, date_filter=None, first_only=False):
                 if first_only:
                     return
 
+
     if not found_any:
         print(f"Текст '{search_text}' не найден в указанных логах.")
+
 
 def main():
     args = parse_args()
