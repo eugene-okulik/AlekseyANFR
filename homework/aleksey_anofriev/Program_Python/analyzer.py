@@ -116,7 +116,6 @@ def analyze_logs(path, search_text, date_filter=None, first_only=False):
                 if first_only:
                     return
 
-
     if not found_any:
         print(f"Текст '{search_text}' не найден в указанных логах.")
 
@@ -124,6 +123,7 @@ def analyze_logs(path, search_text, date_filter=None, first_only=False):
 def main():
     args = parse_args()
     analyze_logs(args.file, args.text, args.date, args.full)
+
 
 if __name__ == '__main__':
     main()
